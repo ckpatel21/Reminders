@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_create_task.xml -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    tools:context=".activity.AddReminder">
+
+    <!-- Task Title -->
+    <EditText
+        android:id="@+id/editTextTaskTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Task Title"
+        android:padding="8dp" />
+
+    <!-- Reminder Date -->
+    <EditText
+        android:id="@+id/editTextReminderDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextTaskTitle"
+        android:layout_marginTop="8dp"
+        android:hint="Reminder Date (YYYY-MM-DD)"
+        android:inputType="date"
+        android:padding="8dp" />
+
+    <!-- Reminder Time -->
+    <EditText
+        android:id="@+id/editTextReminderTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextReminderDate"
+        android:layout_marginTop="8dp"
+        android:hint="Reminder Time (HH:mm)"
+        android:inputType="time"
+        android:padding="8dp" />
+
+    <!-- Submit Button -->
+    <Button
+        android:id="@+id/buttonSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextReminderTime"
+        android:layout_marginTop="16dp"
+        android:text="Submit" />
+
+</RelativeLayout>
