@@ -3,9 +3,7 @@ package com.example.reminders.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.reminders.R
 import com.example.reminders.adapter.TaskAdapter
 import com.example.reminders.databinding.ActivityMainBinding
 import com.example.reminders.model.Task
@@ -16,12 +14,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var taskList : ArrayList<Task>
     private lateinit var taskAdapter : TaskAdapter
     private lateinit var binding : ActivityMainBinding
+    private lateinit var dbHelper: DBHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        dbHelper = DBHelper(this)
 
         init()
 
@@ -49,17 +50,43 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.adapter = taskAdapter
     }
 
-    private fun taskListItems(){
-        taskList.add(Task("chicken Pizza","12","12"))
-        taskList.add(Task("chicken Pizza","12","12"))
-        taskList.add(Task("chicken Pizza","12","12"))
-        taskList.add(Task("chicken Pizza","12","12"))
-        taskList.add(Task("chicken Pizza","12","12"))
-        taskList.add(Task("chicken Pizza","12","12"))
-        taskList.add(Task("chicken Pizza","12","12"))
-        taskList.add(Task("chicken Pizza","12","12"))
-        taskList.add(Task("chicken Pizza","12","12"))
-        taskList.add(Task("chicken Pizza","12","12"))
+    private fun taskListItems() {
+
+        // Fetch data from the database using DBHelper
+        val cursor = dbHelper.getAllReminders()
+
+        // Clear existing data
+        taskList.clear()
+
+        // Check if the cursor is not null before proceeding
+        cursor?.let {
+            // Get column indices
+            val titleIndex = it.getColumnIndex(DBHelper.Title_COl)
+            val dateIndex = it.getColumnIndex(DBHelper.Date_COL)
+            val timeIndex = it.getColumnIndex(DBHelper.Time_COL)
+
+            // Iterate through the cursor and add reminders to the list
+            while (it.moveToNext()) {
+                // Check if column indices are valid
+                if (titleIndex != -1 && dateIndex != -1 && timeIndex != -1) {
+                    val title = it.getString(titleIndex) ?: "DefaultTitle"
+                    val date = it.getString(dateIndex) ?: "DefaultDate"
+                    val time = it.getString(timeIndex) ?: "DefaultTime"
+
+                    taskList.add(Task(title, date, time))
+                }
+            }
+
+            // Close the cursor
+            it.close()
+        }
+        // Update the adapter with the new data
+        taskAdapter.notifyDataSetChanged()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        dbHelper.close()
     }
 
 }

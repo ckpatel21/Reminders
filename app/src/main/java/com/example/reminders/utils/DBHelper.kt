@@ -49,22 +49,10 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.close()
     }
 
-    // below method is to get
-    // all data from our database
-    fun getReminders(): Cursor? {
-
-        // here we are creating a readable
-        // variable of our database
-        // as we want to read value from it
+    fun getAllReminders(): Cursor? {
         val db = this.readableDatabase
-
-        // below code returns a cursor to
-        // read data from the database
         return db.rawQuery("SELECT * FROM $TABLE_NAME", null)
-
     }
-
-
 
     companion object{
         // here we have defined variables for our database
