@@ -9,6 +9,7 @@ import com.example.reminders.R
 import com.example.reminders.adapter.TaskAdapter
 import com.example.reminders.databinding.ActivityMainBinding
 import com.example.reminders.model.Task
+import com.example.reminders.utils.DBHelper
 
 class MainActivity : AppCompatActivity() {
 

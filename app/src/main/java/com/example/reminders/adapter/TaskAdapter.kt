@@ -9,6 +9,7 @@ import com.example.reminders.R
 import com.example.reminders.model.Task
 
 class TaskAdapter(private val taskLists: ArrayList<Task>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+
     class TaskViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val taskTitle : TextView = itemView.findViewById(R.id.taskTitle)
         val taskDate : TextView = itemView.findViewById(R.id.tvDate)

@@ -3,9 +3,9 @@ package com.example.reminders.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.reminders.R
+import android.widget.Toast
 import com.example.reminders.databinding.ActivityAddReminderBinding
-import com.example.reminders.databinding.ActivityMainBinding
+import com.example.reminders.utils.DBHelper
 
 class AddReminder : AppCompatActivity() {
 
@@ -27,6 +27,15 @@ class AddReminder : AppCompatActivity() {
     }
 
     private fun saveTheReminder() {
+        val db = DBHelper(this)
+
+        val title = binding.editTextTaskTitle.text.toString()
+        val date = binding.editTextReminderDate.text.toString()
+        val time = binding.editTextReminderTime.text.toString()
+
+        db.addReminder(title,date,time)
+
+        Toast.makeText(this, "$title added to database", Toast.LENGTH_SHORT).show()
 
     }
 
