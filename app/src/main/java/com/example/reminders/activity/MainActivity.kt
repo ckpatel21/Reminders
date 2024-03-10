@@ -1,6 +1,9 @@
 package com.example.reminders.activity
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        createNotificationChannel()
         dbHelper = DBHelper(this)
 
         init()
@@ -29,6 +33,19 @@ class MainActivity : AppCompatActivity() {
         binding.button.setOnClickListener{
             addNewTask();
         }
+    }
+
+    private fun createNotificationChannel() {
+        val name : CharSequence = "ReminderChannel"
+        val description = "Channel for Alarm Manager"
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val channel = NotificationChannel("remindersApp",name,importance)
+        channel.description = description
+        val notificationManager = getSystemService(
+            NotificationManager::class.java
+        )
+
+        notificationManager.createNotificationChannel(channel)
     }
 
     private fun addNewTask() {

@@ -1,12 +1,16 @@
 package com.example.reminders.activity
 
+import android.app.AlarmManager
 import android.app.DatePickerDialog
+import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.example.reminders.databinding.ActivityAddReminderBinding
+import com.example.reminders.utils.AlarmReceiver
 import com.example.reminders.utils.DBHelper
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -16,6 +20,8 @@ class AddReminder : AppCompatActivity() {
 
     private lateinit var binding : ActivityAddReminderBinding
     private val calendar = Calendar.getInstance()
+    private lateinit var alarmManager: AlarmManager
+    private lateinit var pendingIntent: PendingIntent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +88,40 @@ class AddReminder : AppCompatActivity() {
         db.addReminder(title,date,time)
 
         Toast.makeText(this, "$title added to database", Toast.LENGTH_SHORT).show()
+        setAlarm()
 
+    }
+
+    private fun setAlarm() {
+        alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, AlarmReceiver::class.java)
+
+        pendingIntent = PendingIntent.getBroadcast(this, 0, intent,  PendingIntent.FLAG_IMMUTABLE)
+
+        // Get the selected date and time from the TextViews
+        val selectedDateText = binding.tvSelectedDate.text.toString()
+        val selectedTimeText = binding.tvSelectedTime.text.toString()
+
+        // Parse the selected date and time into Calendar
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+
+        val selectedDate = Calendar.getInstance()
+        selectedDate.time = dateFormat.parse(selectedDateText)!!
+
+        val selectedTime = Calendar.getInstance()
+        selectedTime.time = timeFormat.parse(selectedTimeText)!!
+
+        // Set the selected time to the selected date
+        selectedDate.set(Calendar.HOUR_OF_DAY, selectedTime.get(Calendar.HOUR_OF_DAY))
+        selectedDate.set(Calendar.MINUTE, selectedTime.get(Calendar.MINUTE))
+        selectedDate.set(Calendar.SECOND, selectedTime.get(Calendar.SECOND))
+
+                alarmManager.setExact(
+                    AlarmManager.RTC_WAKEUP, selectedDate.timeInMillis, pendingIntent
+                )
+
+                Toast.makeText(this,"alarm set success", Toast.LENGTH_SHORT).show()
     }
 
     private fun intentBackToMainScreen() {
