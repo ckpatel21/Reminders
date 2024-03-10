@@ -19,7 +19,7 @@ class AlarmReceiver : BroadcastReceiver() {
         Toast.makeText(context, "ALarm received", Toast.LENGTH_SHORT).show()
         val i = Intent(context, MainActivity::class.java)
         intent!!.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        val pendingIntent = PendingIntent.getActivity(context,0,i,PendingIntent.FLAG_IMMUTABLE)
+        val pendingIntent = PendingIntent.getActivity(context,0,i,PendingIntent.FLAG_MUTABLE)
 
         val builder = NotificationCompat.Builder(context!!,"remindersApp")
             .setSmallIcon(R.drawable.ic_launcher_background)

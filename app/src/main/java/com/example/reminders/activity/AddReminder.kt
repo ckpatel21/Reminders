@@ -84,7 +84,6 @@ class AddReminder : AppCompatActivity() {
         val date = binding.tvSelectedDate.text.toString()
         val time = binding.tvSelectedTime.text.toString()
 
-
         db.addReminder(title,date,time)
 
         Toast.makeText(this, "$title added to database", Toast.LENGTH_SHORT).show()
@@ -95,8 +94,9 @@ class AddReminder : AppCompatActivity() {
     private fun setAlarm() {
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, AlarmReceiver::class.java)
-
-        pendingIntent = PendingIntent.getBroadcast(this, 0, intent,  PendingIntent.FLAG_IMMUTABLE)
+        // Generate a unique request code for each alarm
+        val requestCode = System.currentTimeMillis().toInt()
+        pendingIntent = PendingIntent.getBroadcast(this, requestCode, intent,  PendingIntent.FLAG_MUTABLE)
 
         // Get the selected date and time from the TextViews
         val selectedDateText = binding.tvSelectedDate.text.toString()
