@@ -30,8 +30,14 @@ class MainActivity : AppCompatActivity() {
 
         init()
 
-        binding.button.setOnClickListener{
-            addNewTask();
+        binding.btnAddReminder.setOnClickListener{
+            val intent = Intent(this,AddReminder::class.java)
+            startActivity(intent)
+        }
+
+        binding.btnRemindMeThere.setOnClickListener{
+            val intent = Intent(this,RemindMeThereActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -46,11 +52,6 @@ class MainActivity : AppCompatActivity() {
         )
 
         notificationManager.createNotificationChannel(channel)
-    }
-
-    private fun addNewTask() {
-        val intent = Intent(this,AddReminder::class.java)
-        startActivity(intent)
     }
 
     private fun init(){
