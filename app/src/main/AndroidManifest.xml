@@ -8,6 +8,11 @@
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-library
+        android:name="com.google.android.maps"
+        android:required="true" />
 
     <meta-data
         android:name="com.google.android.geo.API_KEY"
@@ -23,6 +28,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Reminders"
         tools:targetApi="31">
+        <activity
+            android:name=".activity.LocationPickerActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.RemindMeThereActivity"
             android:exported="false" />
@@ -42,7 +50,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".utils.AlarmReceiver"></receiver>
+        <receiver android:name=".utils.AlarmReceiver" />
     </application>
 
 </manifest>
